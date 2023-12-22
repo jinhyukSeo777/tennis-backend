@@ -1,11 +1,12 @@
 import { PrismaClient } from "@prisma/client";
 import { printSchema } from "graphql";
+import { protectedResolver } from "../../user/users.utils";
 
 const prisma = new PrismaClient();
 
 const resolvers = {
   Mutation: {
-    deleteMatch: async (_, { id }) => {
+    deleteMatch: protectedResolver(async (_, { id }) => {
       const match = await prisma.match.findUnique({
         where: { id },
         include: { users: true },
@@ -33,7 +34,7 @@ const resolvers = {
           error: "delete fail",
         };
       }
-    },
+    }),
   },
 };
 

@@ -1,10 +1,11 @@
 import { PrismaClient } from "@prisma/client";
+import { protectedResolver } from "../../user/users.utils";
 
 const prisma = new PrismaClient();
 
 const resolvers = {
   Mutation: {
-    deleteFeed: async (_, { id }) => {
+    deleteFeed: protectedResolver(async (_, { id }) => {
       const feed = await prisma.feed.findUnique({
         where: { id },
         include: { Comment: true },
@@ -32,7 +33,7 @@ const resolvers = {
           error: "delete fail",
         };
       }
-    },
+    }),
   },
 };
 

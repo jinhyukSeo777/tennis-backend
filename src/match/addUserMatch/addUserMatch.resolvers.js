@@ -1,10 +1,11 @@
 import { PrismaClient } from "@prisma/client";
+import { protectedResolver } from "../../user/users.utils";
 
 const prisma = new PrismaClient();
 
 const resolvers = {
   Mutation: {
-    addUserMatch: async (_, { matchId, userId }) => {
+    addUserMatch: protectedResolver(async (_, { matchId, userId }) => {
       const match = await prisma.match.update({
         where: {
           id: matchId,
@@ -25,7 +26,7 @@ const resolvers = {
           error: "create fail",
         };
       }
-    },
+    }),
   },
 };
 

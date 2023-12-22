@@ -1,10 +1,11 @@
 import { PrismaClient } from "@prisma/client";
+import { protectedResolver } from "../../user/users.utils";
 
 const prisma = new PrismaClient();
 
 const resolvers = {
   Mutation: {
-    deleteUserMatch: async (_, { matchId, userId }) => {
+    deleteUserMatch: protectedResolver(async (_, { matchId, userId }) => {
       const userMatch = await prisma.userMatch.findFirst({
         where: {
           userId,
@@ -27,7 +28,7 @@ const resolvers = {
           error: "delete fail",
         };
       }
-    },
+    }),
   },
 };
 

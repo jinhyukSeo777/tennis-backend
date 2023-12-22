@@ -1,10 +1,11 @@
 import { PrismaClient } from "@prisma/client";
+import { protectedResolver } from "../../user/users.utils";
 
 const prisma = new PrismaClient();
 
 const resolvers = {
   Mutation: {
-    deleteComment: async (_, { id }) => {
+    deleteComment: protectedResolver(async (_, { id }) => {
       const verify = await prisma.comment.findUnique({
         where: { id },
       });
@@ -22,7 +23,7 @@ const resolvers = {
       return {
         ok: true,
       };
-    },
+    }),
   },
 };
 
