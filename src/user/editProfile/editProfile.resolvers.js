@@ -27,7 +27,7 @@ const resolvers = {
         if (alreadyExists.length !== 0) {
           return {
             ok: false,
-            error: "username or email is already exists",
+            error: "유저네임 혹은 이메일이 이미 존재합니다.",
           };
         }
 
